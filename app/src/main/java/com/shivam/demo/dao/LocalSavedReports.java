@@ -1,4 +1,4 @@
-package com.sample.demo.dao;
+package com.shivam.demo.dao;
 
 import java.util.ArrayList;
 import java.util.List;

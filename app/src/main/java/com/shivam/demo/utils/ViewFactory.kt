@@ -1,17 +1,17 @@
-package com.sample.demo.custom
+package com.shivam.demo.utils
 
 import android.content.Context
+import android.text.InputFilter
 import android.text.InputType
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
-import com.sample.demo.R
-import com.sample.demo.dao.ReportDao
 import com.google.gson.Gson
-import android.text.InputFilter
-import android.view.Gravity
+import com.shivam.demo.R
+import com.shivam.demo.dao.ReportDao
 
 
 class ViewFactory {
@@ -20,10 +20,10 @@ class ViewFactory {
     companion object {
 
         fun getView(context: Context, reportDao: ReportDao): View? {
-            Log.e("reportDao", Gson().toJson(reportDao))
-            when (reportDao.type) {
+
+            when (reportDao.type!!) {
                 "text" -> {
-                    val view = CustomET(context)
+                    val view = CustomEditText(context)
                     view.hint = reportDao.fieldName
                     view.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
                     view.setBackgroundResource(R.drawable.shape_rect)
@@ -38,7 +38,7 @@ class ViewFactory {
 
                 }
                 "number" -> {
-                    val view = CustomET(context)
+                    val view = CustomEditText(context)
                     view.hint = reportDao.fieldName
                     view.inputType = InputType.TYPE_CLASS_NUMBER
                     view.setBackgroundResource(R.drawable.shape_rect)
@@ -58,7 +58,11 @@ class ViewFactory {
                     val view = CustomSpinner(context)
                     view.setBackgroundResource(R.drawable.shape_rect)
                     view.adapter =
-                            ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, reportDao.options)
+                            ArrayAdapter<String>(
+                                context,
+                                android.R.layout.simple_dropdown_item_1line,
+                                reportDao.options
+                            )
                     val params = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         130
@@ -69,7 +73,7 @@ class ViewFactory {
 
                 }
                 "multiline" -> {
-                    val view = CustomET(context)
+                    val view = CustomEditText(context)
                     view.hint = reportDao.fieldName
                     view.setSingleLine(false)
                     view.setBackgroundResource(R.drawable.shape_rect)
@@ -83,8 +87,7 @@ class ViewFactory {
                 }
             }
 
-
-            return View(context)
+            return null
         }
     }
 }

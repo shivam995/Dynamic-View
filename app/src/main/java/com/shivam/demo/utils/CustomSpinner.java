@@ -1,4 +1,4 @@
-package com.sample.demo.custom;
+package com.shivam.demo.utils;
 
 import android.content.Context;
 import android.content.res.Resources;

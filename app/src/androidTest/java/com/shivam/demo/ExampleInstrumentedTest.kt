@@ -1,4 +1,4 @@
-package com.sample.demo
+package com.shivam.demo
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

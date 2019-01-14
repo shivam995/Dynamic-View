@@ -1,4 +1,4 @@
-package com.sample.demo
+package com.shivam.demo
 
 import org.junit.Test
 

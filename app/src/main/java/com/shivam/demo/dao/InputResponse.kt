@@ -1,4 +1,4 @@
-package com.sample.demo.dao
+package com.shivam.demo.dao
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

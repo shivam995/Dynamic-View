@@ -1,16 +1,16 @@
-package com.sample.demo
+package com.shivam.demo
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.MenuItem
 import android.widget.Toast
-import com.sample.demo.custom.BaseView
-import com.sample.demo.custom.ViewFactory
-import com.sample.demo.dao.InputResponse
-import com.sample.demo.dao.LocalSavedReports
-import com.sample.demo.dao.Record
-import com.sample.demo.dao.ReportDao
+import com.shivam.demo.utils.BaseView
+import com.shivam.demo.utils.ViewFactory
+import com.shivam.demo.dao.InputResponse
+import com.shivam.demo.dao.LocalSavedReports
+import com.shivam.demo.dao.Record
+import com.shivam.demo.dao.ReportDao
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_add_report.*
@@ -43,14 +43,14 @@ class AddReportActivity : AppCompatActivity() {
             val data = inputViewList!![i]
             val childView: BaseView = container.getChildAt(i) as BaseView
 
-            if (data.required != null && data.required && TextUtils.isEmpty(childView.value)) {
+            if (data.required != null && data.required!! && TextUtils.isEmpty(childView.value)) {
                 Toast.makeText(this, "Value cannot be empty for " + data.fieldName, Toast.LENGTH_SHORT).show()
                 isValidForm = false
                 return
             }
 
             if (data.min != null && data.max != null) {
-                if (TextUtils.isEmpty(childView.value) || childView.value.toInt() < data.min || childView.value.toInt() > data.max) {
+                if (TextUtils.isEmpty(childView.value) || childView.value.toInt() < data.min!! || childView.value.toInt() > data.max!!) {
                     val message = data.fieldName + " should be between " + data.min + "-" + data.max
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     isValidForm = false

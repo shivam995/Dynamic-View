@@ -1,4 +1,4 @@
-package com.sample.demo
+package com.shivam.demo
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.sample.demo.dao.Record
+import com.shivam.demo.dao.Record
 import kotlinx.android.synthetic.main.itemview_reportlist.view.*
 
 class ReportListAdapter(var list: List<Record>, var context: Context) :
@@ -16,7 +16,7 @@ class ReportListAdapter(var list: List<Record>, var context: Context) :
     var inflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        var v = inflater.inflate(R.layout.itemview_reportlist, p0, false)
+        val v = inflater.inflate(R.layout.itemview_reportlist, p0, false)
 
         return ViewHolder((v))
     }
