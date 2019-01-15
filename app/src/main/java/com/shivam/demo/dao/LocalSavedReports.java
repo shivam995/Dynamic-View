@@ -1,5 +1,8 @@
 package com.shivam.demo.dao;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ public class LocalSavedReports {
 
 
     private static LocalSavedReports sInstance = null;
-    private List<Record> mDataList = new ArrayList<>();
+    private JsonArray arrayList = new JsonArray();
 
     private LocalSavedReports() {
     }
@@ -21,12 +24,12 @@ public class LocalSavedReports {
     }
 
 
-    public void saveReport(Record data) {
-        mDataList.add(data);
+    public void saveReport(JsonObject data) {
+        arrayList.add(data);
     }
 
 
-    public List<Record> getSavedReport() {
-        return mDataList;
+    public JsonArray getSavedReport() {
+        return arrayList;
     }
 }

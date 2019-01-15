@@ -11,14 +11,47 @@ import com.google.gson.reflect.TypeToken
 class InputResponse {
 
     companion object {
-        private val input = "[{'field-name':'name', 'type':'text','required':false},\n" +
+        private val input = "[{\n" +
+                "\t\t\"field-name\": \"name\",\n" +
+                "\t\t\"type\": \"text\",\n" +
+                "\t\t\"required\": true\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"field-name\": \"Zone\",\n" +
+                "\t\t\"type\": \"dropdown\",\n" +
+                "\t\t\"options\": [\"A\", \"B\", \"C\", \"D\"]\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"field-name\": \"age\",\n" +
+                "\t\t\"type\": \"number\",\n" +
+                "\t\t\"required\": true\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"field-name\": \"address\",\n" +
+                "\t\t\"type\": \"composite\",\n" +
+                "\t\t\"fields\": [{\n" +
+                "\t\t\t\t\"field-name\": \"Address line1\",\n" +
+                "\t\t\t\t\"type\": \"text\",\n" +
+                "\t\t\t\t\"required\": true\n" +
+                "\t\t\t},\n" +
+                "\t\t\t{\n" +
+                "\t\t\t\t\"field-name\": \"Address line2\",\n" +
+                "\t\t\t\t\"type\": \"text\"\n" +
+                "\t\t\t},\n" +
+                "\t\t\t{\n" +
+                "\t\t\t\t\"field-name\": \"City\",\n" +
+                "\t\t\t\t\"type\": \"text\",\n" +
+                "\t\t\t\t\"required\": true\n" +
+                "\t\t\t},\n" +
+                "\t\t\t{\n" +
+                "\t\t\t\t\"field-name\": \"State\",\n" +
+                "\t\t\t\t\"type\": \"text\",\n" +
+                "\t\t\t\t\"required\": true\n" +
+                "\t\t\t}\n" +
                 "\n" +
-                "{'field-name':'age', 'type':'number', 'min':18, 'max':65},\n" +
-                "\n" +
-                "{'field-name':'gender', 'type':'dropdown', 'options':['male', 'female', 'other']},\n" +
-                "\n" +
-                "{'field-name':'address', 'type':'multiline'}\n" +
-                "\n" +
+                "\t\t],\n" +
+                "\t\t\"required\": false\n" +
+                "\t}\n" +
                 "]"
 
 

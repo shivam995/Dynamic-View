@@ -4,4 +4,6 @@ public interface BaseView {
 
 
     String getValue();
+
+
 }

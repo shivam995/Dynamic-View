@@ -3,14 +3,13 @@ package com.shivam.demo.utils
 import android.content.Context
 import android.text.InputFilter
 import android.text.InputType
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
-import com.google.gson.Gson
 import com.shivam.demo.R
+import com.shivam.demo.constants.Constants
 import com.shivam.demo.dao.ReportDao
 
 
@@ -19,11 +18,11 @@ class ViewFactory {
 
     companion object {
 
-        fun getView(context: Context, reportDao: ReportDao): View? {
+        fun getView(context: Context, reportDao: ReportDao, valueObserver: IValueObserver): View? {
 
             when (reportDao.type!!) {
-                "text" -> {
-                    val view = CustomEditText(context)
+                Constants.TEXT -> {
+                    val view = CustomEditText(context, valueObserver)
                     view.hint = reportDao.fieldName
                     view.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
                     view.setBackgroundResource(R.drawable.shape_rect)
@@ -37,10 +36,11 @@ class ViewFactory {
                     return view
 
                 }
-                "number" -> {
-                    val view = CustomEditText(context)
+                Constants.NUMBER -> {
+                    val view = CustomEditText(context, valueObserver)
                     view.hint = reportDao.fieldName
                     view.inputType = InputType.TYPE_CLASS_NUMBER
+
                     view.setBackgroundResource(R.drawable.shape_rect)
                     val filterArray = arrayOfNulls<InputFilter>(1)
                     filterArray[0] = InputFilter.LengthFilter(2)
@@ -54,8 +54,8 @@ class ViewFactory {
 
                     return view
                 }
-                "dropdown" -> {
-                    val view = CustomSpinner(context)
+                Constants.DROPDOWN -> {
+                    val view = CustomSpinner(context, valueObserver)
                     view.setBackgroundResource(R.drawable.shape_rect)
                     view.adapter =
                             ArrayAdapter<String>(
@@ -72,8 +72,8 @@ class ViewFactory {
                     return view
 
                 }
-                "multiline" -> {
-                    val view = CustomEditText(context)
+                Constants.MULTILINE -> {
+                    val view = CustomEditText(context, valueObserver)
                     view.hint = reportDao.fieldName
                     view.setSingleLine(false)
                     view.setBackgroundResource(R.drawable.shape_rect)
@@ -85,6 +85,7 @@ class ViewFactory {
 
                     return view
                 }
+
             }
 
             return null

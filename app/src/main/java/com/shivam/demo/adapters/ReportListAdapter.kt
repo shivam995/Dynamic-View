@@ -1,4 +1,4 @@
-package com.shivam.demo
+package com.shivam.demo.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.shivam.demo.dao.Record
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.shivam.demo.R
 import kotlinx.android.synthetic.main.itemview_reportlist.view.*
 
-class ReportListAdapter(var list: List<Record>, var context: Context) :
+class ReportListAdapter(var list: JsonArray, var context: Context) :
     RecyclerView.Adapter<ReportListAdapter.ViewHolder>() {
 
     var inflater: LayoutInflater = LayoutInflater.from(context)
@@ -22,14 +24,14 @@ class ReportListAdapter(var list: List<Record>, var context: Context) :
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return list.size()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
+        val item = list[position] as JsonObject
 
-        holder.name.text = item.name + (if (item.age != null) " - " + item.age else "")
-        holder.address.text = if (!TextUtils.isEmpty(item.address)) ("Address: " + item.address) else ""
+        holder.name.text = item.get("name").asString + (if (item.get("age") != null) " - " + item.get("age") else "")
+        holder.address.text = if (!TextUtils.isEmpty(item.get("City").asString)) ("City: " + item.get("City")) else ""
 
 
     }

@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import com.google.gson.JsonArray
+import com.shivam.demo.adapters.ReportListAdapter
 import com.shivam.demo.dao.LocalSavedReports
-import com.shivam.demo.dao.Record
 import kotlinx.android.synthetic.main.activity_main.*
 
 class HomeActivity : AppCompatActivity() {
 
-    private var reportList: List<Record>? = null
+    private var reportList: JsonArray? = null
     private var adapter: ReportListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,6 @@ class HomeActivity : AppCompatActivity() {
         reportList = LocalSavedReports.getInstance().savedReport
         adapter?.notifyDataSetChanged()
 
-        tvTotalReports.text = "Total Reports: " + reportList!!.size
+        tvTotalReports.text = "Total Reports: " + reportList!!.size()
     }
 }

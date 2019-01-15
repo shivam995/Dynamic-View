@@ -8,19 +8,26 @@
         tools:context=".AddReportActivity">
 
 
-    <ScrollView
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:paddingRight="8dp"-->
+    <!--android:paddingLeft="8dp"-->
+    <!--android:layout_marginTop="8dp">-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/container"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"/>-->
+    <!--</ScrollView>-->
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvDataList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="8dp"
-            android:paddingLeft="8dp"
-            android:layout_marginTop="8dp">
-
-        <LinearLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"/>
-    </ScrollView>
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/btnAddReport"/>
 
     <Button
             android:id="@+id/btnAddReport"

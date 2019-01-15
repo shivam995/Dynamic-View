@@ -2,84 +2,91 @@ package com.shivam.demo
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import com.shivam.demo.utils.BaseView
-import com.shivam.demo.utils.ViewFactory
-import com.shivam.demo.dao.InputResponse
-import com.shivam.demo.dao.LocalSavedReports
-import com.shivam.demo.dao.Record
-import com.shivam.demo.dao.ReportDao
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.shivam.demo.adapters.RecordListAdapter
+import com.shivam.demo.constants.Constants
+import com.shivam.demo.dao.InputResponse
+import com.shivam.demo.dao.LocalSavedReports
+import com.shivam.demo.dao.ReportDao
 import kotlinx.android.synthetic.main.activity_add_report.*
 
 class AddReportActivity : AppCompatActivity() {
 
     private var inputViewList: List<ReportDao>? = null
+    private var listAdapter: RecordListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_report)
         inputViewList = InputResponse.getInputData()
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Add Report"
+        supportActionBar?.hide()
 
         addViews()
 
         btnAddReport.setOnClickListener {
-            validateInput()
+            if (validate(inputViewList!!)) {
+                val response = getData(inputViewList!!, JsonObject())
+                Log.i("Response: ", Gson().toJson(response))
+                Toast.makeText(this, "Record saved", Toast.LENGTH_SHORT).show()
+                LocalSavedReports.getInstance().saveReport(response)
+
+                onBackPressed()
+            }
         }
 
     }
 
-    private fun validateInput() {
-        val length = inputViewList?.size!!
-        var isValidForm = true
-        var responseObject = JsonObject()
-        for (i in 0 until length) {
-            val data = inputViewList!![i]
-            val childView: BaseView = container.getChildAt(i) as BaseView
+    private fun addViews() {
+        listAdapter = RecordListAdapter(this, inputViewList!!)
+        rvDataList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rvDataList.adapter = listAdapter
 
-            if (data.required != null && data.required!! && TextUtils.isEmpty(childView.value)) {
-                Toast.makeText(this, "Value cannot be empty for " + data.fieldName, Toast.LENGTH_SHORT).show()
-                isValidForm = false
-                return
-            }
 
-            if (data.min != null && data.max != null) {
-                if (TextUtils.isEmpty(childView.value) || childView.value.toInt() < data.min!! || childView.value.toInt() > data.max!!) {
-                    val message = data.fieldName + " should be between " + data.min + "-" + data.max
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                    isValidForm = false
-                    return
+    }
+
+
+    private fun validate(list: List<ReportDao>): Boolean {
+        var isValid = true
+        for (i in 0 until list.size) {
+            val item = list[i]
+            val type = item.type
+            if (type.equals(Constants.COMPOSITE, true)) {
+                validate(item.fields!!)
+            } else if (item.required != null && item.required == true && TextUtils.isEmpty(item.value)) {
+                Toast.makeText(this, "Enter value for " + item.fieldName, Toast.LENGTH_LONG).show()
+                isValid = false
+                break
+            } else if (!TextUtils.isEmpty(item.value)) {
+                if (type.equals(Constants.NUMBER) && ((item.min != null && item.value?.toInt()!! < item.min!!) || (item.max != null && item.value?.toInt()!! < item.max!!))) {
+                    Toast.makeText(
+                        this,
+                        "Value for " + item.fieldName + " should be between " + item.min + "-" + item.max,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    isValid = false
+                    break
                 }
             }
 
-            responseObject.addProperty(data.fieldName, childView.value)
         }
-
-        if (isValidForm) {
-            LocalSavedReports.getInstance().saveReport(Gson().fromJson(responseObject, Record::class.java))
-            Toast.makeText(this, "Report saved successfully", Toast.LENGTH_SHORT).show()
-            finish()
-
-
-        }
-
+        return isValid
     }
 
-    /**
-     * Adding view to LinearLayout dynamically based on Json input
-     */
-    private fun addViews() {
-        val length = inputViewList?.size!!
-
-        for (i in 0 until length) {
-            container.addView(ViewFactory.getView(this, inputViewList!![i]))
+    private fun getData(list: List<ReportDao>, jsonObj: JsonObject): JsonObject {
+        for (i in 0 until list.size) {
+            if (list[i].type.equals(Constants.COMPOSITE, true)) {
+                getData(list[i].fields!!, jsonObj)
+            } else if (!TextUtils.isEmpty(list[i].value)) {
+                jsonObj.addProperty(list[i].fieldName, list[i].value)
+            }
         }
+        return jsonObj
     }
 
 
