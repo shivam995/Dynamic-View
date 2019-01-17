@@ -1,42 +1,74 @@
 package com.shivam.demo
 
-import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import com.google.gson.JsonArray
-import com.shivam.demo.adapters.ReportListAdapter
-import com.shivam.demo.dao.LocalSavedReports
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.gson.JsonObject
+import com.shivam.demo.constants.Constants
+import com.shivam.demo.dao.ReportDao
+import com.shivam.demo.fragment.HomeFragment
+import com.shivam.demo.fragment.ViewListFragment
+import com.shivam.demo.utils.IFragmentChangeListener
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), IFragmentChangeListener {
 
-    private var reportList: JsonArray? = null
-    private var adapter: ReportListAdapter? = null
+
+    private var currentFragment: Fragment? = null
+    private var fragmentCount = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.title = "Dashboard"
-        reportList = LocalSavedReports.getInstance().savedReport
+        pushFragment(Constants.FRAGMENT_HOME, null)
 
-        adapter = ReportListAdapter(reportList!!, this)
-        rvReport.adapter = adapter
-        rvReport.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rvReport.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+    }
 
+    override fun pushFragment(fragmentId: Int, data: Bundle?) {
+        when (fragmentId) {
+            Constants.FRAGMENT_HOME -> {
+                currentFragment = HomeFragment.newInstance(data)
 
-        btnAdd.setOnClickListener {
-            startActivity(Intent(this, AddReportActivity::class.java))
+            }
+            Constants.FRAGMENT_ADD_RECORD -> {
+                currentFragment = ViewListFragment.newInstance(data)
+            }
+        }
+
+        if (currentFragment != null) {
+            fragmentCount++
+            supportFragmentManager.beginTransaction()
+                .addToBackStack(fragmentCount.toString())
+                .replace(R.id.frameLayout, currentFragment!!, fragmentCount.toString())
+                .commit()
+        }
+
+    }
+
+    override fun popFragment() {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+            fragmentCount--
+            currentFragment = supportFragmentManager.findFragmentByTag(fragmentCount.toString())
+
+        } else
+            finish()
+    }
+
+    override fun onBackPressed() {
+        if(currentFragment is ViewListFragment) {
+            var reportList: MutableList<ReportDao>? = (currentFragment as ViewListFragment).dataList
+            popFragment()
+            if (currentFragment != null && currentFragment is ViewListFragment) {
+                (currentFragment as ViewListFragment).resetData(reportList)
+            }
+        }else{
+            popFragment()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        reportList = LocalSavedReports.getInstance().savedReport
-        adapter?.notifyDataSetChanged()
 
-        tvTotalReports.text = "Total Reports: " + reportList!!.size()
-    }
+
+
 }

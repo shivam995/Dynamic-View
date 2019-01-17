@@ -1,6 +1,7 @@
 package com.shivam.demo.utils
 
 import android.content.Context
+import android.graphics.Typeface
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.shivam.demo.R
 import com.shivam.demo.constants.Constants
 import com.shivam.demo.dao.ReportDao
@@ -79,6 +81,17 @@ class ViewFactory {
                     view.setBackgroundResource(R.drawable.shape_rect)
                     view.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
                     view.gravity = Gravity.TOP
+                    val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 350)
+                    params.setMargins(46, 20, 46, 0)
+                    view.layoutParams = params
+
+                    return view
+                }
+
+                Constants.COMPOSITE -> {
+                    val view = TextView(context)
+                    view.text = reportDao.fieldName
+                    view.setTypeface(null, Typeface.BOLD)
                     val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 350)
                     params.setMargins(46, 20, 46, 0)
                     view.layoutParams = params

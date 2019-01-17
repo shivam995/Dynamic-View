@@ -27,7 +27,7 @@ class ReportDao : Serializable {
     var options: List<String>? = null
     @SerializedName("fields")
     @Expose
-    var fields: List<ReportDao>? = null
+    var fields: ArrayList<ReportDao>? = null
 
     var value:String? = null
 }

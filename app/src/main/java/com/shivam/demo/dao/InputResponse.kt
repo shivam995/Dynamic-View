@@ -55,8 +55,8 @@ class InputResponse {
                 "]"
 
 
-        fun getInputData(): List<ReportDao> {
-            val listType = object : TypeToken<List<ReportDao>>() {
+        fun getInputData(): ArrayList<ReportDao> {
+            val listType = object : TypeToken<ArrayList<ReportDao>>() {
 
             }.type
             return Gson().fromJson(input, listType)

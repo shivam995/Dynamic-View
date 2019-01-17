@@ -29,9 +29,10 @@ class ReportListAdapter(var list: JsonArray, var context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position] as JsonObject
-
+        val city = item.get("City")
         holder.name.text = item.get("name").asString + (if (item.get("age") != null) " - " + item.get("age") else "")
-        holder.address.text = if (!TextUtils.isEmpty(item.get("City").asString)) ("City: " + item.get("City")) else ""
+
+        holder.address.text = if (city!=null) ("City: " + item.get("City")) else ""
 
 
     }

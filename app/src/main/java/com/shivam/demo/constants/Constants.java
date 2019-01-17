@@ -9,4 +9,6 @@ public interface Constants {
     String COMPOSITE = "composite";
     String DROPDOWN = "dropdown";
 
+    Integer FRAGMENT_HOME = 1;
+    Integer FRAGMENT_ADD_RECORD = 2;
 }
