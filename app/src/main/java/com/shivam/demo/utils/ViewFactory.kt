@@ -32,7 +32,7 @@ class ViewFactory {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     )
-                    params.setMargins(46, 20, 46, 0)
+                    params.setMargins(46, 30, 46, 0)
                     view.layoutParams = params
 
                     return view
@@ -51,7 +51,7 @@ class ViewFactory {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     )
-                    params.setMargins(46, 20, 46, 0)
+                    params.setMargins(46, 30, 46, 0)
                     view.layoutParams = params
 
                     return view
@@ -69,7 +69,7 @@ class ViewFactory {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         130
                     )
-                    params.setMargins(46, 20, 46, 0)
+                    params.setMargins(46, 30, 46, 0)
                     view.layoutParams = params
                     return view
 
@@ -82,7 +82,7 @@ class ViewFactory {
                     view.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
                     view.gravity = Gravity.TOP
                     val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 350)
-                    params.setMargins(46, 20, 46, 0)
+                    params.setMargins(46, 30, 46, 0)
                     view.layoutParams = params
 
                     return view
@@ -90,10 +90,13 @@ class ViewFactory {
 
                 Constants.COMPOSITE -> {
                     val view = TextView(context)
-                    view.text = reportDao.fieldName
+                    view.text = reportDao.fieldName?.toUpperCase()
                     view.setTypeface(null, Typeface.BOLD)
-                    val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 350)
-                    params.setMargins(46, 20, 46, 0)
+                    view.gravity = Gravity.CENTER_VERTICAL
+                    view.setBackgroundResource(R.drawable.shape_rect)
+                    view.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_right, 0)
+                    val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                    params.setMargins(46,30,46,20)
                     view.layoutParams = params
 
                     return view
